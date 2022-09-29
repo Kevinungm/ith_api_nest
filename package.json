@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "prueba",
+=======
+  "name": "prueba_uno",
+>>>>>>> 4d87ba1 (Tarea de validar correo)
   "version": "0.0.1",
   "description": "",
   "author": "",
