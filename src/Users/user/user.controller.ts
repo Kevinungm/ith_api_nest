@@ -21,9 +21,9 @@ export class UserController {
         // Valida la respuesta, si el usuario no existe, regresa un mensaje diciendo que no fue encontrado
         const user = this.userService.getByEmail(param);
         if(!user?.correo) {
-          return this.userService.getByEmail(param)
+          throw new HttpException(`No existe el correo`, HttpStatus.NOT_FOUND)
         } else {
-          throw new HttpException(`No existe el correo`, HttpStatus.NOT_FOUND);
+          return this.userService.getByEmail(param)
         }
     }
 }
