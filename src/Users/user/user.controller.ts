@@ -1,5 +1,5 @@
 import { User } from './../../Models/User';
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post,Put } from '@nestjs/common';
 import { UserService } from './user.service';
 
 
@@ -9,7 +9,9 @@ export class UserController {
 
     }
     @Post()
-    Create(@Body() params : User ):void{
+    Create(@Body() params : User ):string{
+        if (this.userService.userExist(Number(params.id)))
+        return "El usuario ya existe"
         this.userService.create(params)
     }
     @Get('/all')
@@ -17,13 +19,19 @@ export class UserController {
         return this.userService.getAll()
     }
     @Get('/:correo')
-    getUser(@Param('correo') param) : User{
+    getUser(@Param('correo') param) : User| String{
         // Valida la respuesta, si el usuario no existe, regresa un mensaje diciendo que no fue encontrado
         const user = this.userService.getByEmail(param);
-        if(!user?.correo) {
-          return this.userService.getByEmail(param)
-        } else {
-          throw new HttpException(`No existe el correo`, HttpStatus.NOT_FOUND);
-        }
+
+      return user ? user : "El usuario no existe"
     }
+
+    @Put('/update/:id')
+    actualizartUsuario(@Body() user : User, @Param('id') id){
+        return this.userService.updateUserById(Number(id), user)
+    }
+
+    
+    
 }
+
