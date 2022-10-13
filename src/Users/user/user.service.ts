@@ -1,16 +1,22 @@
 import { User } from './../../models/User';
+import { User as UserEntity } from 'src/entities/user.entity';
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
-    find(arg0: (user: any) => boolean): User {
-        throw new Error('Method not implemented.');
+    constructor(
+        @InjectRepository(UserEntity)
+        private userEntity : Repository<UserEntity>
+    ){
+        //constructor
     }
     private readonly Users: User[] = []
 
-    create( user : User ): boolean{
-        this.Users.push(user)
-        return true
+    async create( user : User ){
+        //this.Users.push(user)
+        return await this.userEntity.insert(user);
     }
 
     getAll() : User[]{
